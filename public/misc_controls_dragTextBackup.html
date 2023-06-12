@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - drag controls</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				background-color: #f0f0f0;
+				color: #444;
+			}
+			a {
+				color: rgb(22, 58, 90);
+			}
+		</style>
+	</head>
+	<body>
+
+		<script type="module">
+			import * as THREE from '../build/three.module.js';
+			import { GLTFLoader } from './jsm/loaders/GLTFLoader.js';
+			import { DragControls } from './jsm/controls/DragControls.js';
+
+			let container;
+			let camera, scene, renderer;
+			let controls, group;
+			let enableSelection = false;
+
+			let particlesArray = [];
+
+			const objects = [];
+			const draggableObjectTypes = [];
+
+			const mouse = new THREE.Vector2(), raycaster = new THREE.Raycaster();
+
+			class DraggableObject{
+					constructor(_ModelName, _DisplayName, _OriginalPosition, _TargetPosition, _Scene) {
+					this.originalPosition = _OriginalPosition;
+					this.targetPosition = _TargetPosition;
+					this.modelName = _ModelName;
+					this.model;
+
+					let Model;
+					scene.traverse(function(child) {
+						if(child.name == _ModelName){
+							Model = child;
+							child.position.x = _TargetPosition.x;
+							child.position.y = _TargetPosition.y + 30;
+							child.position.z = _TargetPosition.z;
+							
+						}
+					});
+					
+					this.markerObject = new THREE.Mesh( new THREE.BoxGeometry(5, 5, 5), new THREE.MeshLambertMaterial( { color: 0x09C618 } ) );	
+					this.markerObject.position.x = _TargetPosition.x;
+					this.markerObject.position.y = _TargetPosition.y;
+					this.markerObject.position.z = _TargetPosition.z;
+
+					this.model = Model;
+
+					this.isHeld = false;
+					this.hasBeenDraggedToLocation = false;
+					
+					GenerateText(this, _DisplayName, _ModelName);
+
+					_Scene.add(this.markerObject);
+  				}
+
+				OnTextSpawned(){
+					let ObjectToDrag;
+					let ModelName = this.modelName
+					scene.traverse(function(child) {
+						console.log(child.name);
+						if(child.name == ModelName + "TextObj"){
+							console.log(child.name);
+							ObjectToDrag = child;	
+						}
+					});
+					this.draggableMeshObject = ObjectToDrag;
+					objects.push(this.draggableMeshObject);
+
+					this.draggableMeshObject.position.x = this.originalPosition.x;
+					this.draggableMeshObject.position.y = this.originalPosition.y;
+					this.draggableMeshObject.position.z = this.originalPosition.z;
+
+					if(objects.length == 3){
+						MakeNewDragControls(objects);
+					}
+
+				}
+				
+				IsWithinRangeOfTarget(){
+					return this.targetPosition.distanceTo(this.draggableMeshObject.position) < 10;					
+				}
+
+				LerpToOrgPosition(){
+					this.draggableMeshObject.position.x = this.lerp(this.draggableMeshObject.position.x, this.originalPosition.x, 0.05);
+					this.draggableMeshObject.position.y = this.lerp(this.draggableMeshObject.position.y, this.originalPosition.y, 0.05);
+				}
+
+				LerpToTargetPosition(){
+					this.draggableMeshObject.position.x = this.lerp(this.draggableMeshObject.position.x, this.targetPosition.x, 0.05);
+					this.draggableMeshObject.position.y = this.lerp(this.draggableMeshObject.position.y, this.targetPosition.y, 0.05);
+				}
+
+				lerp (start, end, amt){
+  					return (1-amt)*start+amt*end
+				}
+			}
+
+			class Particle{
+				constructor(){
+					let Colors = [0xff0000, 0x00ff00, 0x00ff, 0xfff000];
+					const geometry = new THREE.BoxGeometry( 0.25, 0.25, 0 );
+					const material = new THREE.MeshBasicMaterial( {color: Colors[THREE.MathUtils.randInt(0, Colors.length-1)]} ); //Pick random color
+					const cube = new THREE.Mesh( geometry, material );
+
+					cube.position.x = THREE.MathUtils.randFloat(-15, 15);
+					cube.position.y = THREE.MathUtils.randFloat(10, 20);
+
+					this.fallSpeed = THREE.MathUtils.randFloat(0.05, 0.1);
+					this.rotationXSpeed = THREE.MathUtils.randFloat(0.05, 0.1);
+
+					this.ParticleMesh = cube;					
+					scene.add( cube );
+				}
+				
+				Update(){
+					this.ParticleMesh.position.y -= this.fallSpeed;
+					this.ParticleMesh.rotation.x += this.rotationXSpeed;
+				}
+			}
+
+			init();
+
+			function init() {
+
+				container = document.createElement( 'div' );
+				document.body.appendChild( container );
+
+				camera = new THREE.PerspectiveCamera( 70, window.innerWidth / window.innerHeight, 1, 5000 );
+				camera.position.z = 10;
+
+				scene = new THREE.Scene();
+				scene.background = new THREE.Color( 0xf0f0f0 );
+
+				scene.add( new THREE.AmbientLight( 0x505050 ) );
+
+				const light = new THREE.SpotLight( 0xffffff, 1.5 );
+				light.position.set( 0, 500, 2000 );
+				light.angle = Math.PI / 9;
+
+				light.castShadow = true;
+				light.shadow.camera.near = 1000;
+				light.shadow.camera.far = 4000;
+				light.shadow.mapSize.width = 1024;
+				light.shadow.mapSize.height = 1024;
+
+				scene.add( light );
+				
+				renderer = new THREE.WebGLRenderer( { antialias: true } );
+				renderer.setPixelRatio( window.devicePixelRatio );
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				renderer.shadowMap.enabled = true;
+				renderer.shadowMap.type = THREE.PCFShadowMap;
+
+				container.appendChild( renderer.domElement );
+
+				LoadModel("ChickenPieces.glb");
+
+				window.addEventListener( 'resize', onWindowResize );
+
+				animate();
+				render();
+			}
+
+			function onWindowResize() {
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				render();
+			}
+
+			function LoadModel(_NameOfModelToLoad){
+				const loader = new GLTFLoader();
+				loader.load( _NameOfModelToLoad, function ( gltf ) {
+					scene.add( gltf.scene );
+					gltf.scene.traverse( function ( child ) {
+
+						if ( child.isSkinnedMesh ) child.castShadow = true;
+					});
+
+
+				draggableObjectTypes.push(new DraggableObject("Leg", "Leg", new THREE.Vector3(-100, 70, -200), new THREE.Vector3(100, 70, -200), scene));
+				draggableObjectTypes.push(new DraggableObject("Crown", "Crown", new THREE.Vector3(-100, 0, -200), new THREE.Vector3(100, 0, -200), scene));
+				draggableObjectTypes.push(new DraggableObject("Drumstick", "Drumstick", new THREE.Vector3(-100, -70, -200), new THREE.Vector3(100, -70, -200),  scene));
+
+				let ObjectNotPartOfTest = ["Chicken", "BreastWing", "FrenchedBreast", "Wing", "Wingette", "WingTip", "Tender", "LegsBack", "FrenchedDrumstick"];
+								
+				scene.traverse(function(child) {
+						for (let i = 0; i < ObjectNotPartOfTest.length; i++) {
+							if(ObjectNotPartOfTest[i] == child.name){
+								child.visible = false;
+							}
+						}
+					});
+				});
+			}
+
+			function MakeNewDragControls(_ListOfObjects){
+				controls = new DragControls( [ ... _ListOfObjects ], camera, renderer.domElement );
+				
+				controls.addEventListener( 'dragstart', function ( event ) {
+					console.log("Start Drag " + event.object.name);
+					SetIfHeld(event.object, true);					
+				} );
+
+				controls.addEventListener( 'dragend', function ( event ) {
+					console.log("Finish Drag " + event.object.name);
+					SetIfHeld(event.object, false);
+				} );
+			}
+
+			function SetIfHeld(_Object, _IsHeld){
+				for (let i = 0; i < draggableObjectTypes.length; i++) {
+					if(draggableObjectTypes[i].draggableMeshObject == _Object){
+						draggableObjectTypes[i].isHeld = _IsHeld;
+					}
+				}	
+			}
+
+			function GetCurrentScollPosition(){
+				return window.pageYOffset || document.documentElement.scrollTop;
+			}
+
+			function OnQuizComplete(){
+				SpawnCelebrationParticles();
+				console.log("QUIZ COMPLETE");
+			}
+
+			function render() {
+				renderer.render( scene, camera );
+			}
+
+			function animate(){
+				for (let i = 0; i < particlesArray.length; i++) {
+					particlesArray[i].Update();
+				}
+
+				for (let i = 0; i < draggableObjectTypes.length; i++) {
+					if(!draggableObjectTypes[i].isHeld && draggableObjectTypes[i].draggableMeshObject != null){
+						if(draggableObjectTypes[i].IsWithinRangeOfTarget() && !draggableObjectTypes[i].hasBeenDraggedToLocation){													
+							draggableObjectTypes[i].hasBeenDraggedToLocation = true;
+
+							//If in position, remove object from array and make new drag class
+							let ObjectsNotDraggedYet = [];
+							for (let j = 0; j < draggableObjectTypes.length; j++) {
+								if(!draggableObjectTypes[j].hasBeenDraggedToLocation){
+									ObjectsNotDraggedYet.push(draggableObjectTypes[j].draggableMeshObject);
+								}
+							}
+
+							if(ObjectsNotDraggedYet.length == 0){
+								OnQuizComplete();
+							}
+
+							controls.dispose();
+
+							MakeNewDragControls(ObjectsNotDraggedYet);							
+						}
+
+
+						if(!draggableObjectTypes[i].hasBeenDraggedToLocation){
+							draggableObjectTypes[i].LerpToOrgPosition();
+						}else{
+							draggableObjectTypes[i].LerpToTargetPosition();
+						}
+					}
+
+					if(!draggableObjectTypes[i].hasBeenDraggedToLocation){
+						draggableObjectTypes[i].model.rotation.y += 0.005;
+					}else{
+						draggableObjectTypes[i].model.rotation.y = 0;
+					}
+				}
+
+				
+				render();
+				requestAnimationFrame( animate );
+			}
+
+			function GenerateText(_DraggableObject, _DisplayMessage, _ModelName){
+				const loader = new THREE.FontLoader();
+				let text;
+				let YOffset = 0;
+				loader.load( 'fonts/helvetiker_regular.typeface.json', function ( font ) {
+					const color = new THREE.Color( 0xffffff );
+					const matLite = new THREE.MeshBasicMaterial( {
+						color: color,
+						transparent: true,
+						opacity: 1,
+						side: THREE.DoubleSide
+					} );
+					//console.log("_ClickableHotspotObj.hotSpotDisplayTex" + _ClickableHotspotObj.hotSpotDisplayText)
+					const message = _DisplayMessage;
+					const shapes = font.generateShapes( message, 10 );
+					const geometry = new THREE.ShapeGeometry( shapes );
+					geometry.computeBoundingBox();
+					const xMid = - 0.5 * ( geometry.boundingBox.max.x - geometry.boundingBox.min.x );
+					geometry.translate( xMid, YOffset, 0 );
+
+					matLite.depthTest = false;
+					//matLite.depthWrite = false;
+
+					let Padding = new THREE.Vector2(30, 15);
+
+					const GeometryBackground = new THREE.BoxGeometry( ( geometry.boundingBox.max.x - geometry.boundingBox.min.x ) + Padding.x, (geometry.boundingBox.max.y - geometry.boundingBox.min.y ) + Padding.y, 0.1 );
+					const MaterialBackground = new THREE.MeshBasicMaterial( {color: 0x000000} );
+					MaterialBackground.depthTest = false;
+					MaterialBackground.transparent = true;
+					GeometryBackground.translate(0, ((geometry.boundingBox.max.y - geometry.boundingBox.min.y )/2) + YOffset, 0); //-25 is to center background on text
+					const BackGroundObject = new THREE.Mesh( GeometryBackground, MaterialBackground );					
+					
+					text = new THREE.Mesh( geometry, matLite );					
+					scene.add( text );
+
+					scene.add( BackGroundObject ); //Wait to add to scene, as will flash before parented
+
+					text.parent = BackGroundObject;
+					BackGroundObject.name = _ModelName + "TextObj";
+
+					text.sortObjects = false;
+					text.renderOrder = 200;
+
+					BackGroundObject.sortObjects = false;
+					BackGroundObject.renderOrder = 200;
+
+					BackGroundObject.scale.x = 0.5;
+					BackGroundObject.scale.y = 0.5;
+					BackGroundObject.scale.z = 0.5;
+
+					const holeShapes = [];
+
+					for ( let i = 0; i < shapes.length; i ++ ) {
+						const shape = shapes[ i ];
+						if ( shape.holes && shape.holes.length > 0 ) {
+							for ( let j = 0; j < shape.holes.length; j ++ ) {
+								const hole = shape.holes[ j ];
+								holeShapes.push( hole );
+							}
+						}
+					}
+					shapes.push.apply( shapes, holeShapes );
+					_DraggableObject.OnTextSpawned(); //Here as text is finally spawned
+				}); //end load function				
+			}
+
+			function SpawnCelebrationParticles(){
+				for ( let i = 0; i < 500; i ++ ) {
+					particlesArray.push(new Particle());
+				}
+			}
+		</script>
+	</body>
+</html>

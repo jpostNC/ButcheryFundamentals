@@ -1,0 +1,125 @@
+.nav {
+    display: grid;
+    background: var(--primary-color);
+    align-content: center;
+  }
+  
+  .navContainer {
+    display: grid;
+    grid-auto-flow: column;
+    grid-template-areas: "logoText logo desktopNav";
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 0 1em;
+    min-height: 6.25em;
+  }
+  
+  .logo {
+    grid-area: logo;
+    display: grid;
+    align-content: center;
+    justify-items: center;
+  }
+  .logo > img{
+    height: 68px;
+    width: 68px;
+  }
+  
+  
+  .logoText {
+    grid-area: logoText;
+    display: grid;
+    align-content: center;
+  }
+  
+  .logoText > h1 {
+    margin: 0;
+    line-height: 1;
+  }
+  
+  .desktopNav {
+    grid-area: desktopNav;
+    display: grid;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-content: center;
+  }
+  
+  .desktopNav > h2 {
+    text-transform: uppercase;
+    font-style: italic;
+    margin: 0;
+  }
+  
+  .navLinks {
+    display: none;
+  }
+  
+  .navLinks > p {
+    margin: 0;
+    font-size: 1.125em;
+    cursor: pointer;
+  }
+  
+  .mobileBanner {
+    background-color: #1898e0;
+    min-height: 23px;
+  }
+  
+  .mobileNavLinks {
+    display: flex;
+    gap: 2.25em;
+    color: white;
+    justify-content: flex-end;
+    padding: 0 14px;
+    font-weight: 600;
+  }
+  
+  .mobileNavLinks > p {
+    cursor: pointer;
+  }
+  
+  @media only screen and (min-width: 52em) {
+    .nav {
+      align-content: revert;
+    }
+  
+    .navContainer {
+      grid-template-areas: "logo logoText desktopNav";
+      grid-template-columns: 110px 1fr 1fr;
+      min-height: 9em;
+      padding: 0 2.375em;
+    }
+  
+    .logoText > h1 {
+      font-weight: 900;
+      font-size: 3em;
+    }
+  
+    .desktopNav {
+      justify-content: flex-end;
+      text-align: right;
+      align-content: revert;
+      grid-template-rows: 70% 30%;
+    }
+  
+    .desktopNav > h2 {
+      font-size: 2.25em;
+      font-weight: 900;
+      align-self: flex-end;
+    }
+  
+    .navLinks {
+      display: flex;
+      gap: 1.5em;
+      align-self: center;
+    }
+  
+    .logo > object {
+      height: revert;
+      width: revert;
+    }
+  
+    .mobileBanner {
+      display: none;
+    }
+}

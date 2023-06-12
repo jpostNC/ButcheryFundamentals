@@ -1,0 +1,15 @@
+.bblue {
+    color: #0044ff;
+    font-weight: 700;
+}
+a:link {
+    color: #67c3f8;
+    background-color: transparent;
+    text-decoration: none;
+  }
+
+  a:visited {
+    color: #e4a1ff;
+    background-color: transparent;
+    text-decoration: none;
+  }

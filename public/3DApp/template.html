@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Butchery Fundamentals</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+</head>
+
+<body>
+    <nav class='nav'>
+        <div class='navContainer'>
+            <div class='logo'>
+
+                <img id='logoImage' src="./logo.svg"></img>
+
+            </div>
+            <div class='logoText'>
+                <h1>Butchery</h1>
+                <h1>Fundamentals</h1>
+            </div>
+            <div class='desktopNav'>
+                <h2 id='websiteTitle'></h2>
+                <div class='navLinks'>
+                    <p onclick=" window.open('/3DApp/AppInstruct/AppInstruct.htm','_blank')" ; > Help</p>
+                </div>
+            </div>
+        </div>
+        <div class='mobileBanner'>
+            <div class='mobileNavLinks'>
+                <p onclick=" window.open('/3DApp/AppInstruct/AppInstruct.htm','_blank')" ; >Help</p>
+            </div>
+        </div>
+    </nav>
+    <div class='mainContent'>
+        <section>
+            <div class='main2ColContent'>
+                <div class='interactiveContent'>
+                    <div class="webGLembed" id='webGLembed'>
+                        <div class='backButton'><button class="button" id='backButton'>BACK</button></div>
+                        <div class='readerButton'>
+                            <button class="button" id='readerToggleButton'>Reader</button>
+                            <button class="button" id='allVideosToggleButton'>View All Videos</button>
+                        </div>
+                        <div class='animationLoopButton'><button class="button" id='animationLoopToggleButton'>Loop
+                                Animation</button></div>
+                        <div class='startButton'><button class="button" id='startButton'>START</button></div>
+                    </div>
+                    <div class='toolBar' id='buttonMenu'>
+                    </div>
+                </div>
+                <div id='videoContainer' style="display: grid; grid-template-rows: auto 1fr;">
+                    <h2 style="margin:0;padding: 0 1em" id='videoTitle'></h2>
+                    <iframe id="video" video="" width="100%" height="100%" controls="" autoplay  src="">
+                        <source src="" type="video/mp4">
+                        <track id="subtitlesTrack" track="" src="Fish/Trout/1.vtt" kind="subtitles" srclang="en"
+                            label="English">
+                    </iframe>
+                </div>
+            </div>
+        </section>
+
+        <section class="termsSection">
+            <div tabindex="4" style="display: grid; grid-template-columns: 1fr auto; padding: 0 1em">
+                <h3>Video specific glossary</h3>
+                <button class='button' onclick=" window.open('GlossaryOfTermsInfo.htm','_blank')" ;>Glossary of
+                    terms</button>
+            </diV>
+            <div tabindex="5" class='terms' id='InfoPage'>
+
+            </div>
+        </section>
+
+        <section>
+            <h3 tabindex="6" style='padding: 0 1em'>Facts and interesting information</h3>
+            <div tabindex="7" class='imgGal' id='imgGal'>
+            </div>
+        </section>
+        <section>
+            <div class='quizDiv'>
+                <button class="buttonLG" id='startQuizButton'>Start Quiz</button>
+            </div>
+        </section>
+        <!--<script type="module" src="Kitchen/scriptKitchen.js"></script>-->
+        <!--<script type="module" src="Lamb/scriptLamb.js"></script>-->
+        <!-- <script type="module" src="Chicken/scriptChicken.js"></script> -->
+
+        <script type="module">
+            let currentMeatID;
+            var btn = document.getElementById("logoImage");
+            btn.addEventListener("click", function () {
+                OnLogoClicked();
+            }, false);
+
+            // Parse the URL parameter
+            function getParameterByName(name, url) {
+                if (!url) url = window.location.href;
+                name = name.replace(/[\[\]]/g, "\\$&");
+                var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+                    results = regex.exec(url);
+                if (!results) return null;
+                if (!results[2]) return '';
+                return decodeURIComponent(results[2].replace(/\+/g, " "));
+            }
+            // Give the parameter a variable name
+            loadMeatScript(getParameterByName('meat'));
+
+            function loadMeatScript(_MeatToLoad) {
+                if (_MeatToLoad === '' || _MeatToLoad == null) {
+                    _MeatToLoad = "Fish"; //TEMP FOR TESTING, loads this as default
+                    console.log("No Script Selected")
+                    //return; //TEMP FOR TESTING
+                }
+
+                currentMeatID = _MeatToLoad;
+
+                var head = document.getElementsByTagName('head')[0];
+                var script = document.createElement('script');
+                script.type = "module";
+                if (_MeatToLoad == "Chicken")
+                    script.src = "Chicken/scriptChicken.js";
+                if (_MeatToLoad == "Lamb")
+                    script.src = "Lamb/scriptLamb.js";
+                if (_MeatToLoad == "Pork")
+                    script.src = "Pork/scriptPork.js";
+                if (_MeatToLoad == "Beef")
+                    script.src = "Beef/scriptBeef.js";
+                if (_MeatToLoad == "Fish")
+                    script.src = "Fish/scriptFish.js";
+                if (_MeatToLoad == "Kitchen")
+                    script.src = "Kitchen/scriptKitchen.js";
+                if (_MeatToLoad == "Game")
+                    script.src = "Game/scriptGame.js";
+                head.appendChild(script);
+            }
+
+            function OnLogoClicked() { //Loads back the splash page
+                let URLToOpen;
+                if (currentMeatID == "Chicken")
+                    URLToOpen = "Chicken/splashChicken.html";
+                if (currentMeatID == "Lamb")
+                    URLToOpen = "Lamb/splashLamb.html";
+                if (currentMeatID == "Pork")
+                    URLToOpen = "Pork/splashPork.html";
+                if (currentMeatID == "Beef")
+                    URLToOpen = "Beef/splashBeef.html";
+                if (currentMeatID == "Fish")
+                    URLToOpen = "Fish/splashFish.html";
+                if (currentMeatID == "Kitchen")
+                    URLToOpen = "Kitchen/splashKitchen.html";
+                if (currentMeatID == "Game")
+                    URLToOpen = "Game/splashGame.html";
+                window.open(URLToOpen, "_self");
+            }
+
+        </script>
+
+        <!--<script type="module" src="Pork/scriptPork.js"></script>-->
+
+        <!--https://word2cleanhtml.com/cleanit-->
+
+        <div id="loadingScreen" class="loading">
+            <div id="LoadingText" h1 style="font-size:1.5vw;">Loading</h1>
+            </div>
+            <div class='uil-ring-css' style='transform:scale(0.79);'>
+                <div></div>
+            </div>
+        </div>
+
+        <div id='myModal' class='modal'>
+        </div>
+    </div>
+</body>
+
+</html>

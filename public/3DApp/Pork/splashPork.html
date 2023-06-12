@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Pork - Butchery Fundamentals</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class='container'>
+        <div class='photoSplash'>
+            <picture class="logo">
+                <source srcset='../logo.webp' type="image/webp">
+                <img srcset='../logo.jpg' alt='Logo' draggable="false" />
+            </picture>
+            <picture class='ContentPreview'>
+                <source srcset="Splash/PorkSplash.jpg" type="image/jpg">
+                <img srcset='Splash/PorkSplash.jpg' alt='Pork splash screen' draggable="false" />
+            </picture>
+            <div class='logoText'>
+                <h1>Butchery</h1>
+                <h1>Fundamentals</h1>
+            </div>
+            <h2>Pork</h2>
+            <div class='toolbarDesktop'>
+                <button class="button" onclick=" window.open('../AppInstruct/AppInstruct.htm','_blank')" ;>Instructions</button>
+                <button class="button" id='launch'>Launch</button>
+                <div class= 'DisclaimerText'>
+                    <p>George Brown College is located on the traditional territory of the Mississaugas of the Credit First Nation and other Indigenous peoples who have lived here over time. We are grateful to share this land as treaty people who learn, work and live in the community with each other. </p>
+                    <p>Loyalist College is located on the territory of the Huron-Wendat, the Anishnaabeg, and the Haudenosaunee people. We acknowledge our shared obligation to respect, honour, and sustain these lands and the natural resources contained within.  </p>
+                    <p>Niagara College acknowledges the land on which we gather is the traditional territory of the Haudenosaunee and Anishinaabe peoples, many of whom continue to live and work here today. This territory is covered by the Upper Canada Treaties and is within the land protected by the Dish With One Spoon Wampum agreement. Today this gathering place is home to many First Nations, Métis, and Inuit peoples and acknowledging reminds us that our great standard of living is directly related to the resources and friendship of Indigenous peoples.</p>
+                    </div>
+            </div>
+        </div>
+        <div class='toolbarMobile'>
+            <button class="button" onclick=" window.open('../AppInstruct/AppInstruct.htm','_blank')" ;>Instructions</button>
+            <button class="button" id='launchM'>Launch</button>
+        </div>
+        <div class= 'DisclaimerTextMobile'>
+            <p>George Brown College is located on the traditional territory of the Mississaugas of the Credit First Nation and other Indigenous peoples who have lived here over time. We are grateful to share this land as treaty people who learn, work and live in the community with each other. </p>
+            <p>Loyalist College is located on the territory of the Huron-Wendat, the Anishnaabeg, and the Haudenosaunee people. We acknowledge our shared obligation to respect, honour, and sustain these lands and the natural resources contained within.  </p>
+            <p>Niagara College acknowledges the land on which we gather is the traditional territory of the Haudenosaunee and Anishinaabe peoples, many of whom continue to live and work here today. This territory is covered by the Upper Canada Treaties and is within the land protected by the Dish With One Spoon Wampum agreement. Today this gathering place is home to many First Nations, Métis, and Inuit peoples and acknowledging reminds us that our great standard of living is directly related to the resources and friendship of Indigenous peoples.</p>
+            </div>
+        <div class='content'>
+            <h3><span class="bblue">Introduction</span></h3>
+            <p>Welcome to the pork module.  In this module you will visit Linc Farm in Niagara, and join butcher Jamie Waldron as he overviews the theory and techniques necessary for butchering, preparing, handling and storing pork. The pig used in this module was raised at Linc Farm. You will also  interact with pork 3D models, and complete related assessments. 
+                 </p>
+            <h3><span class="bblue">Learning Objectives</span></h3>
+            <p>After completing this module you will be able to: </p>
+            <ul>
+                <li>Identify common primal, sub-primal and restaurant cuts of pork. 
+                </li>
+                <li>Understand common pork butchery techniques and how to fabricate restaurant cuts from a whole animal.</li>
+                <li>Differentiate between tender and tough cuts of meat.</li>
+                <li>Identify cooking techniques to match the cut of meat.</li>
+                <li>Identify key issues in modern day meat processing industries. </li>
+            </ul>
+            <p>This project is made possible with funding by the Government of Ontario and through
+                eCampusOntario's support of the Virtual Learning Strategy. To learn more about the Virtual
+                Learning Strategy visit: <a target="_blank"
+                href="https://vls.ecampusontario.ca">
+                https://vls.ecampusontario.ca </a>.</p>
+
+            <p><img srcset='Splash/88x31.png' draggable="false" /></p>            
+        </div>
+    </div>
+</body>
+<script>
+    document.getElementById('launch').addEventListener('click', function () {
+        window.location.href = '../template.html?meat=Pork';
+    });
+    document.getElementById('launchM').addEventListener('click', function () {
+        window.location.href = '../template.html?meat=Pork';
+    });
+</script>
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .bblue {
+        color: #1898E0;
+        font-weight: 700;
+    }
+
+    .button {
+        background: #1898E0;
+        color: white;
+        border: none;
+        padding: 1em;
+        cursor: pointer;
+        font-weight: 700;
+        border: white 1px solid;
+    }
+
+    .button:hover {
+        background: white;
+        color: #1898E0;
+        border: #1898E0 1px solid;
+    }
+
+    .photoSplash {
+        background: #EBF2FD;
+        display: grid;
+        position: relative;
+        grid-template-rows: 89px 120px auto;
+        grid-template-areas: "logo"
+            "logoText"
+            "img";
+        padding-bottom: 32px;
+    }
+
+    .logo {
+        grid-area: logo;
+        justify-self: center;
+        max-height: 79px;
+        margin-top: 0.5em;
+    }
+
+    .logo img {
+        height: 100%;
+        display: grid;
+        margin: auto;
+    }
+
+    .logoText {
+        grid-area: logoText;
+    }
+
+    .logoText>h1 {
+        margin: 0;
+        line-height: 1;
+        font-size: 2.5em;
+        font-weight: 900;
+        text-align: center;
+    }
+
+    .photoSplash>h2 {
+        grid-area: title;
+        position: absolute;
+        bottom: 0.5em;
+        left: 0.5em;
+        font-style: italic;
+        text-transform: uppercase;
+        font-weight: 2.25em;
+        font-weight: 900;
+        margin: 0;
+    }
+
+    .ContentPreview {
+        grid-area: img;
+    }
+
+    .ContentPreview>img {
+        width: 100%;
+    }
+
+    .toolbarDesktop {
+        display: none;
+        grid-area: toolBar;
+    }
+
+    .toolbarMobile {
+        display: flex;
+        justify-content: space-between;
+        gap: 1em;
+    }
+
+    .toolbarMobile .button {
+        max-width: 190px;
+        width: 100%;
+    }
+
+    .DisclaimerText{
+        font-size: 75%;
+        position:absolute;
+        padding: 1em;
+        height: 50px;
+
+        bottom: 0px;
+        left: 0px;
+        right: 0px;
+        top: 700px;
+    }
+
+    .DisclaimerTextMobile{
+        font-size: 75%;
+        padding: 1em;
+    }
+
+    .content {
+        padding: 1em;
+    }
+
+    .content p, .content li {
+        max-width: 75ch;
+    }
+    
+
+    @media only screen and (min-width: 40em) {}
+
+    @media only screen and (min-width: 52em) {}
+
+
+    @media only screen and (min-width: 64em) {
+
+        html,
+        body {
+            height: 100%;
+        }
+
+        .toolbarMobile {
+            display: none;
+        }
+
+        .DisclaimerTextMobile {
+            display: none;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 742px auto;
+            height: inherit;
+        }
+
+        .photoSplash {
+            /* grid-template-areas: "logo"
+            "logoText"
+            "img"; */
+            grid-template-areas: "logo logoText"
+                "title title"
+                "img img"
+                "toolBar toolBar";
+            grid-template-columns: 135px auto;
+            grid-template-rows: 133px 50px min-content 60px;
+        }
+
+        .logo {
+            grid-area: logo;
+            max-height: 100px;
+            align-self: end;
+            margin-left: 24px;
+        }
+
+        .logoText {
+            align-self: end;
+        }
+
+        .logoText>h1 {
+            text-align: left;
+        }
+
+        .photoSplash>h2 {
+            margin-left: 24px;
+        }
+
+        .toolbarDesktop {
+            display: flex;
+            max-width: 451px;
+            width: 100%;
+            justify-self: center;
+            justify-content: space-between;
+        }
+
+        .toolbarDesktop .button {
+            max-width: 190px;
+            width: 100%;
+        }
+
+        .ContentPreview {
+            display: grid;
+            align-content: end;
+        }
+
+        .ContentPreview>img {
+            justify-self: center;
+            max-width: 960px;
+        }
+
+    }
+
+    @media only screen and (min-width: 128em) {
+        .ContentPreview {
+            align-content: center;
+        }
+
+    }
+</style>
+
+</html>

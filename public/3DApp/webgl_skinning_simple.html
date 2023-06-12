@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js - skinning - simple</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="style.css" />
+	</head>	
+	<body>
+
+		<!-- The Modal -->
+		<div id="myModal" class="modal">
+		<span class="close">&times;</span>
+		<img class="modal-content" id="img01">
+		<div id="caption"></div>
+		</div>
+
+		<div id="header">
+			<h1 style="font-size:1vw;">Butchery Fundamentals Interactive App </h1>			 
+			<div class="btn-group">
+				<div id="buttonMenu">
+				</div>
+				 <button type="Button" style="float: right;" id="backButton">Back</button>
+				
+			</div>
+		</div>
+
+		<div id="buttonMenu">
+					
+		</div>
+
+		<!--<iframe id="videoFrame">-->
+		<div id="videoFrame">
+			<h1 style="font-size:0.9vw;">VIDEO</h1>	
+			<video id="video" video width=90% controls>				
+			<source src="" type="video/mp4">
+			<track id="subtitlesTrack" track src="" kind="subtitles" srclang="en" label="English">			
+			</video>
+		</div>
+		<!--</iframe>-->
+		
+		<!--<div id="video"> //Maybe add ID to get video itself, then can access subtitles, currently am getting like frame, need to see how to access video itself			
+			<video width=100% controls>
+				<source src="Chicken/Clod-1.mp4" type="video/mp4">
+				<track src="Chicken/Clod.vtt" kind="subtitles" srclang="en" label="English">
+			  </video>
+		</div>-->
+
+		<div id="content">
+			<div class="btn-group">
+				<h1 style="font-size:0.9vw;">INTERACTIVE MENU</h1>	
+			</div>
+			<div id="myScene" class="content">					
+			</div>
+		</div>
+
+		<!--iframe did not work, so am just using div for images to click-->
+		<div id="right_side">
+			<h1 style="font-size:0.9vw;">MEDIA</h1>	
+		</div>
+
+		<div id="text_info">
+			<div id = "TextTitle" h1 style="font-size:1vw;">Text Info</h1></div>
+				<iframe id="InfoPage"></iframe>
+		</div>
+
+		<!--<script type="module" src="Kitchen/scriptKitchen.js"></script>-->
+		<!--<script type="module" src="Lamb/scriptLamb.js"></script> -->
+		<script type="module" src="Chicken/scriptChicken.js"></script>
+
+		<!--https://word2cleanhtml.com/cleanit-->
+
+		<div id="loadingScreen" class="loading">
+			<div id = "LoadingText" h1 style="font-size:1.5vw;">Loading</h1></div>
+			<div class='uil-ring-css' style='transform:scale(0.79);'>
+			  <div></div>
+			</div>
+		  </div>
+
+		  <div id="myModal" class="modal">
+			<span class="close">&times;</span>
+			<img class="modal-content" id="img01">
+			<div id="caption"></div>
+			</div>
+	</body>
+</html>

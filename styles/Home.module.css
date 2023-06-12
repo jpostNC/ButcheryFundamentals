@@ -1,0 +1,181 @@
+.fullPageLayout {
+  min-height: 100vh;
+  display: grid;
+  grid-template-rows: auto 1fr;
+}
+
+.mainContent {
+  display: grid;
+  grid-template-rows: 50px 468px 1fr;
+  min-height: 100%;
+}
+
+.mainContentQuiz {
+  display: grid;
+  grid-template-rows: 50px auto 1fr;
+  min-height: 100%;
+}
+
+.interactiveContent {
+  display: grid;
+}
+
+.LoginForm {
+  grid-area: content;
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 1em;
+  padding: 2em 4.4em;
+  width: 100%;
+  display: grid;
+  grid-template-rows: repeat(5, max-content);
+  gap: 1em;
+}
+
+.LoginForm input {
+  padding: 0 14px !important;
+  height: 48px;
+  width: 100%;
+  line-height: normal;
+  font-size: 16px;
+  color: #232323;
+  background-color: #ebeaea;
+  background-color: rgba(0, 0, 0, 0.1);
+  border: 1px solid #999;
+  border-radius: 10px;
+  outline: none;
+}
+.LoginForm input::selection {
+  color: white;
+  background-color: var(--secondary-color);
+}
+.LoginForm input:focus {
+  border: 1px solid var(--secondary-color);
+}
+.LoginForm .fieldLabel {
+  display: grid;
+  gap: 1em;
+}
+.LoginForm label {
+  font-size: 0.75em;
+  font-weight: 600;
+}
+
+.topContent {
+  max-width: 850px;
+  max-height: 468px;
+  justify-self: center;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  width: 100%;
+  align-content: end;
+  padding: 0 1em;
+}
+.bottomContent {
+  max-width: 850px;
+  max-height: 468px;
+  justify-self: center;
+  justify-content: center;
+  display: grid;
+  width: 100%;
+  padding: 1em 0.5em;
+  grid-template-rows: 1fr 75px;
+  text-align: center;
+}
+.end {
+  justify-self: end;
+}
+.nextQ {
+  width: 100%;
+  background-color: var(--secondary-color);
+  border-radius: 23px;
+  cursor: pointer;
+}
+
+.btnEntry {
+  background-color: #ebf2fd;
+  border-radius: 23px;
+  cursor: pointer;
+  height: fit-content;
+}
+
+.btnEntry:hover {
+  background-color: var(--secondary-color);
+}
+
+.btnEntry > p {
+  font-size: 1.2em;
+  padding: 0.5em 0.9em;
+}
+
+.nextQ > p {
+  font-size: 1.2em;
+  font-weight: 500;
+  margin: 0.5em;
+}
+.nextQ:hover {
+  background-color: var(--primary-color);
+}
+
+.loadingModal {
+  margin: 0 auto;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+.loadingModal > img {
+  max-width: 300px;
+  width: 100%;
+}
+
+.quizContainer {
+  background-color: #aeaeae;
+  width: 100%;
+  max-width: 841px;
+  justify-self: center;
+  display: grid;
+  grid-template-rows: 350px 1fr;
+}
+
+.imgContainer {
+  display: grid;
+}
+.imgContainer > img {
+  height: 100%;
+  width: 100%;
+  object-fit: contain;
+  justify-self: center;
+}
+.imgContainer > h2 {
+  justify-self: center;
+  align-self: center;
+  text-align: center;
+  margin: 0 0.3em;
+}
+
+.btnSection {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1em;
+  padding: 1em;
+  justify-content: center;
+}
+
+@media only screen and (min-width: 52em) {
+  .bottomContent {
+    grid-template-rows: 1fr 100px;
+  }
+  .mainContent {
+    grid-template-rows: 100px 468px 1fr;
+  }
+  .mainContentQuiz {
+    grid-template-rows: 68px auto 1fr;
+  }
+
+  .nextQ > p {
+    font-size: 2em;
+    font-weight: 500;
+  }
+}

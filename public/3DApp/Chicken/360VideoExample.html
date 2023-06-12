@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>three.js webgl - equirectangular video panorama</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			body {
+				touch-action: none;
+			}
+			.center {
+			margin: 0;
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			-ms-transform: translate(-50%, -50%);
+			transform: translate(-50%, -50%);
+			}
+			
+		</style>
+	</head>
+	<body>
+		<div class="center">
+			<div id="overlay">
+				<button id="startButton" onclick="HidePlayButton()">Play 360 Video</button>
+			</div>
+		</div>
+
+		<div id="container"></div>
+
+		<video id="video" loop crossOrigin="anonymous" playsinline style="display:none">			
+			<source src="GBC1-test.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"'>
+		</video>
+
+		<script type="module" src="../360Video.js"></script>
+		<script>
+			function HidePlayButton() {
+				document.getElementById("overlay").style.display = "none";
+			}
+		</script>
+	</body>
+</html>

@@ -1,0 +1,10 @@
+.button{
+    background-color: var(--secondary-color);
+    border-radius: 23px;
+    min-height: 80px;
+    min-width: 100%;
+    cursor: pointer;
+}
+.button:hover{
+    background-color: var(--primary-color);
+}
